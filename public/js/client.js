@@ -4,6 +4,7 @@ import MouseState from '/js/MouseState.js';
 // Client
 
 const GRID_SIZE = 40;
+const PIXEL_SCALE = 160;
 
 var socket;
 var entities;
@@ -83,7 +84,20 @@ function onInitialize(data) {
 }
 
 function onBall(data) {
+  console.log('onBall');
+  const { entityId, x, y, vx, vy, size } = data;
 
+  console.log('onBall x:' + x + ' y:' + y + ' vx:' + vx + ' vy:' + vy + ' size:' + size);
+
+  const ballEntity = new Entity('ball', entityId);
+
+  ballEntity.x = x;
+  ballEntity.y = y;
+  ballEntity.vx = vx;
+  ballEntity.vy = vy;
+  ballEntity.size = size;
+
+  entities[entityId] = ballEntity;
 }
 
 function onWall(data) {
@@ -105,7 +119,16 @@ function onWall(data) {
 }
 
 function onHazard(data) {
+  console.log('onHazard');
+  const { entityId, x, y, size } = data;
 
+  const hazardEntity = new Entity('hazard', entityId);
+
+  hazardEntity.x = x;
+  hazardEntity.y = y;
+  hazardEntity.size = size;
+
+  entities[entityId] = hazardEntity;
 }
 
 function onRemove(data) {
@@ -116,7 +139,7 @@ function onRemove(data) {
 function update() {
   var timestamp = Date.now();
 
-  updateEntities();
+  updateEntities(timestamp);
   drawBackground();
   drawEntities();
   drawMouseState();
@@ -200,12 +223,21 @@ function onMouseUp(event) {
   mouseState.onMouseUp(event.offsetX, event.offsetY);
 
   if (!(mouseState.x1 === mouseState.x1 && mouseState.y1 === mouseState.y2)) {
-    socket.emit('request wall', {x1: mouseState.x1, x2: mouseState.x2, y1: mouseState.y1, y2: mouseState.y2});
+    socket.emit('request wall', {
+      x1: c2w(mouseState.x1),
+      x2: c2w(mouseState.x2),
+      y1: c2w(mouseState.y1),
+      y2: c2w(mouseState.y2),
+    });
   }
 }
 
 function onMouseMove(event) {
   mouseState.onMouseMove(event.offsetX, event.offsetY);
+}
+
+function c2w(value) {
+  return value / PIXEL_SCALE;
 }
 
 // Run the start function after load is complete.

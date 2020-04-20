@@ -1,3 +1,5 @@
+const PIXEL_SCALE = 160;
+
 export default class Entity {
     constructor(entityType, entityId) {
         this.entityId = entityId;
@@ -9,15 +11,15 @@ export default class Entity {
         this.playerName = null;
         this.score = null;
 
-        // Position
+        // Ball or hazard position
         this.x = null;
         this.y = null;
         
-        // Velocity
+        // Ball velocity
         this.vx = null;
         this.vy = null;
 
-        // Size (radius or square width)
+        // Hazard size (radius or square width)
         this.size = null;
 
         // Line
@@ -38,10 +40,10 @@ export default class Entity {
     }
 
     _updatePosition(timestamp) {
-        if (this.vx != null) {
-            var dt = timestamp - this.lastUpdate / 1000.0;
-            this.x += this.vx * dt;
-            this.y += this.vy * dt;
+        if (this.vx != null && this.vy != null) {
+            var dt = (timestamp - this.lastUpdate) / 1000.0;
+            this.x += (this.vx * dt);
+            this.y += (this.vy * dt);
         }
     }
 
@@ -53,12 +55,12 @@ export default class Entity {
 
     _drawBall() {
         if (this.entityType == 'ball') {
+            console.log('drawBall x:' + this.x + ' y:' + this.y + ' size:' + this.size);
             var canvas = document.getElementById('myCanvas');
             var context = canvas.getContext('2d');
-            var radius = this.size;
       
             context.beginPath();
-            context.arc(this.x, this.y, radius, 0, 2 * Math.PI, false);
+            context.arc(w2c(this.x), w2c(this.y), w2c(this.size), 0, 2 * Math.PI, false);
             context.fillStyle = 'green';
             context.fill();
             context.lineWidth = 1;
@@ -72,10 +74,10 @@ export default class Entity {
             var canvas = document.getElementById('myCanvas');
             var context = canvas.getContext('2d');
       
-            var left = this.x - (this.size / 2);
-            var top = this.y - (this.size / 2);
+            var left = this.x - (this.size);// / 2);
+            var top = this.y - (this.size);// / 2);
             context.beginPath();            
-            context.rect(left, top, this.size, this.size);
+            context.rect(w2c(left), w2c(top), w2c(this.size * 2), w2c(this.size * 2));
             context.fillStyle = 'red';
             context.fill();
             context.lineWidth = 1;
@@ -90,10 +92,10 @@ export default class Entity {
             var context = canvas.getContext('2d');
             context.fillStyle = 'grey';
             context.beginPath();
-            context.moveTo(this.x1, this.y1);
-            context.lineTo(this.x2, this.y2);
-            context.lineTo(this.x3, this.y3);
-            context.lineTo(this.x4, this.y4);
+            context.moveTo(w2c(this.x1), w2c(this.y1));
+            context.lineTo(w2c(this.x2), w2c(this.y2));
+            context.lineTo(w2c(this.x3), w2c(this.y3));
+            context.lineTo(w2c(this.x4), w2c(this.y4));
             context.closePath();
             context.fill();
             context.lineWidth = 1;
@@ -101,4 +103,9 @@ export default class Entity {
             context.stroke();
         }
     }
+}
+
+// World to canvas transform.
+function w2c(val) {
+    return val * PIXEL_SCALE;
 }
