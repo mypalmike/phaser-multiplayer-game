@@ -32,7 +32,7 @@ export default class Entity {
     }
 
     update(timestamp) {
-        _updatePosition(timestamp);
+        this._updatePosition(timestamp);
 
         this.lastUpdate = timestamp;
     }
@@ -78,7 +78,7 @@ export default class Entity {
             context.rect(left, top, this.size, this.size);
             context.fillStyle = 'red';
             context.fill();
-            context.lineWidth = 7;
+            context.lineWidth = 1;
             context.strokeStyle = 'black';
             context.stroke();
         }
@@ -88,7 +88,7 @@ export default class Entity {
         if (this.entityType == 'wall') {
             var canvas = document.getElementById('myCanvas');
             var context = canvas.getContext('2d');
-            context.fillStyle = 'blue';
+            context.fillStyle = 'grey';
             context.beginPath();
             context.moveTo(this.x1, this.y1);
             context.lineTo(this.x2, this.y2);
@@ -96,6 +96,9 @@ export default class Entity {
             context.lineTo(this.x4, this.y4);
             context.closePath();
             context.fill();
+            context.lineWidth = 1;
+            context.strokeStyle = 'black';
+            context.stroke();
         }
     }
 }

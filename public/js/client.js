@@ -63,24 +63,20 @@ function onSocketDisconnect () {
 function onInitialize(data) {
   console.log('Receiving initial state');
 
-  var localPlayer = data['localPlayer'];
+  const { localPlayer, balls, hazards, walls } = data;
 
-  var balls = data['balls'];
   for (const ball of balls) {
     onBall(ball);
   }
 
-  var hazards = data['hazards'];
   for (const hazard of hazards) {
     onHazard(hazard);
   }
 
-  var enemies = data['enemies'];
-  for (const enemy of enemies) {
-    onEnemy(enemy);
-  }
+  // for (const enemy of enemies) {
+  //   onEnemy(enemy);
+  // }
 
-  var walls = data['walls'];
   for (const wall of walls) {
     onWall(wall);
   }
@@ -92,6 +88,20 @@ function onBall(data) {
 
 function onWall(data) {
   console.log('onWall');
+  const { entityId, x1, x2, x3, x4, y1, y2, y3, y4 } = data;
+
+  const wallEntity = new Entity('wall', entityId);
+
+  wallEntity.x1 = x1;
+  wallEntity.x2 = x2;
+  wallEntity.x3 = x3;
+  wallEntity.x4 = x4;
+  wallEntity.y1 = y1;
+  wallEntity.y2 = y2;
+  wallEntity.y3 = y3;
+  wallEntity.y4 = y4;
+
+  entities[entityId] = wallEntity;
 }
 
 function onHazard(data) {
