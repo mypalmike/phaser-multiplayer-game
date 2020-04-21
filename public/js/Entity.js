@@ -6,6 +6,7 @@ export default class Entity {
         this.entityType = entityType;
         this.createTimestamp = Date.now();
         this.lastUpdate = this.createTimestamp;
+        this.owner = null;
 
         // Player
         this.playerName = null;
@@ -18,6 +19,9 @@ export default class Entity {
         // Ball velocity
         this.vx = null;
         this.vy = null;
+
+        // Color
+        this.color = 'grey';
 
         // Hazard size (radius or square width)
         this.size = null;
@@ -55,13 +59,12 @@ export default class Entity {
 
     _drawBall() {
         if (this.entityType == 'ball') {
-            console.log('drawBall x:' + this.x + ' y:' + this.y + ' size:' + this.size);
             var canvas = document.getElementById('myCanvas');
             var context = canvas.getContext('2d');
       
             context.beginPath();
             context.arc(w2c(this.x), w2c(this.y), w2c(this.size), 0, 2 * Math.PI, false);
-            context.fillStyle = 'green';
+            context.fillStyle = this.color;
             context.fill();
             context.lineWidth = 1;
             context.strokeStyle = 'black';

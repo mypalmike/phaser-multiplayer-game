@@ -62,9 +62,11 @@ function onSocketDisconnect () {
 }
 
 function onInitialize(data) {
-  console.log('Receiving initial state');
+  console.log('Receiving initial state');// + JSON.stringify(data));
 
   const { localPlayer, balls, hazards, walls } = data;
+
+  localPlayerEntityId = localPlayer.entityId;
 
   for (const ball of balls) {
     onBall(ball);
@@ -85,7 +87,7 @@ function onInitialize(data) {
 
 function onBall(data) {
   console.log('onBall');
-  const { entityId, x, y, vx, vy, size } = data;
+  const { entityId, x, y, vx, vy, size, owner } = data;
 
   console.log('onBall x:' + x + ' y:' + y + ' vx:' + vx + ' vy:' + vy + ' size:' + size);
 
@@ -96,6 +98,14 @@ function onBall(data) {
   ballEntity.vx = vx;
   ballEntity.vy = vy;
   ballEntity.size = size;
+  ballEntity.owner = owner;
+
+  console.log('owner ' + ballEntity.owner + ' local ' + localPlayerEntityId);
+  if (owner !== localPlayerEntityId) {
+    ballEntity.color = 'gray';
+  } else {
+    ballEntity.color = 'green';
+  }
 
   entities[entityId] = ballEntity;
 }
