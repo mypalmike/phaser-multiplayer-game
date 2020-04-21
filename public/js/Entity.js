@@ -44,7 +44,7 @@ export default class Entity {
     }
 
     _updatePosition(timestamp) {
-        if (this.vx != null && this.vy != null) {
+        if (this.vx !== null && this.vy !== null) {
             var dt = (timestamp - this.lastUpdate) / 1000.0;
             this.x += (this.vx * dt);
             this.y += (this.vy * dt);
@@ -58,7 +58,7 @@ export default class Entity {
     }
 
     _drawBall() {
-        if (this.entityType == 'ball') {
+        if (this.entityType === 'ball') {
             var canvas = document.getElementById('myCanvas');
             var context = canvas.getContext('2d');
       
@@ -73,7 +73,7 @@ export default class Entity {
     }
 
     _drawHazard() {
-        if (this.entityType == 'hazard') {
+        if (this.entityType === 'hazard') {
             var canvas = document.getElementById('myCanvas');
             var context = canvas.getContext('2d');
       
@@ -90,7 +90,7 @@ export default class Entity {
     }
 
     _drawWall() {
-        if (this.entityType == 'wall') {
+        if (this.entityType === 'wall') {
             var canvas = document.getElementById('myCanvas');
             var context = canvas.getContext('2d');
             context.fillStyle = 'grey';

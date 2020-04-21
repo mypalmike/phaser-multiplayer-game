@@ -2,15 +2,22 @@
 <html lang='en'>
   <head>
     <meta charset='UTF-8' />
-    <title>Keep The Bouncy Thing Alive</title>
-    <link type='text/css' rel='stylesheet' href='/style/reset.css' />
-    <link type='text/css' rel='stylesheet' href='/style/game.css' />
+    <title>Keep Bouncy Thing Alive</title>
+    <!-- <link type='text/css' rel='stylesheet' href='/style/reset.css' />
+    <link type='text/css' rel='stylesheet' href='/style/game.css' /> -->
     <!-- <script src='/js/vendor/phaser.min.js'></script> -->
     <script src='/socket.io/socket.io.js'></script>
   </head>
   <body>
 
+    <h1>Keep bouncy thing alive</h1>
+    <p>Bouncy thing doesn’t want to die. Hitting the red blocks or going out of bounds kills bouncy thing.</p>
+    <p><b>Drag the mouse to create walls to bounce off of.</b></p>
+    <p>You can have 2 walls at a a time. Your bouncy thing is green, other players’ bouncy things are gray.</p>
+    <p>After your bouncy thing dies, <b>reload the page to play again</b>.</p>
     <canvas id="myCanvas" width="600" height="600"></canvas>
+
+
 
     <!-- <script src='/js/RemotePlayer.js'></script> -->
     <script src='/js/Entity.js' type='module'></script>

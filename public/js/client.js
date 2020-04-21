@@ -31,7 +31,6 @@ function initEventHandlers() {
   socket.on('initialize', onInitialize);
   socket.on('ball', onBall);
   socket.on('wall', onWall);
-  // socket.on('hazard', onHazard);
   socket.on('remove', onRemove);
 }
 
@@ -47,23 +46,16 @@ function initInput() {
 }
 
 function onSocketConnect () {
-  console.log('Connected');
-
   initEntities();
 
   var playerName = 'joe'; // TODO document.getSOMETHING.substr(0,16)
-
-  // Send local player data to the game server
   socket.emit('join', { name: playerName })
 }
 
 function onSocketDisconnect () {
-  console.log('Disconnected')
 }
 
 function onInitialize(data) {
-  console.log('Receiving initial state');// + JSON.stringify(data));
-
   const { localPlayer, balls, hazards, walls } = data;
 
   localPlayerEntityId = localPlayer.entityId;
@@ -76,20 +68,13 @@ function onInitialize(data) {
     onHazard(hazard);
   }
 
-  // for (const enemy of enemies) {
-  //   onEnemy(enemy);
-  // }
-
   for (const wall of walls) {
     onWall(wall);
   }
 }
 
 function onBall(data) {
-  console.log('onBall');
   const { entityId, x, y, vx, vy, size, owner } = data;
-
-  console.log('onBall x:' + x + ' y:' + y + ' vx:' + vx + ' vy:' + vy + ' size:' + size);
 
   const ballEntity = new Entity('ball', entityId);
 
@@ -100,7 +85,6 @@ function onBall(data) {
   ballEntity.size = size;
   ballEntity.owner = owner;
 
-  console.log('owner ' + ballEntity.owner + ' local ' + localPlayerEntityId);
   if (owner !== localPlayerEntityId) {
     ballEntity.color = 'gray';
   } else {
@@ -111,7 +95,6 @@ function onBall(data) {
 }
 
 function onWall(data) {
-  console.log('onWall');
   const { entityId, x1, x2, x3, x4, y1, y2, y3, y4 } = data;
 
   const wallEntity = new Entity('wall', entityId);
@@ -129,7 +112,6 @@ function onWall(data) {
 }
 
 function onHazard(data) {
-  console.log('onHazard');
   const { entityId, x, y, size } = data;
 
   const hazardEntity = new Entity('hazard', entityId);
@@ -201,7 +183,6 @@ function drawEntities() {
 
 function drawMouseState() {
   if (mouseState.isDown) {
-    console.log('drawMouseState');
     var canvas = document.getElementById("myCanvas");
     var context = canvas.getContext("2d");
     context.strokeStyle = 'white';
@@ -225,7 +206,6 @@ function canvasHeight() {
 }
 
 function onMouseDown(event) {
-  console.log('onMouseDown');
   mouseState.onMouseDown(event.offsetX, event.offsetY);
 }
 
